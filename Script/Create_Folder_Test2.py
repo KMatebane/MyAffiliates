@@ -26,3 +26,21 @@ file_path   = export_path + file_name
 
 if not os.path.exists(export_path):
         os.makedirs(export_path)
+
+
+def FTP_conn_Opti():
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None
+    server = pysftp.Connection('GVCModels.eu.vault.optimove.net', username='GVCModels', password='?', cnopts=cnopts)
+    return server
+
+def upload(filename):
+    print('uploading to FTP now')
+    server = connector.FTP_conn_Opti()
+    server.cwd("casino")  ## location on the server???
+    server.cwd("bi-recommendations")
+    server.put(filename)
+    print(filename+' uploaded to SFTP')
+    server.close()
+
+upload(file_path)
