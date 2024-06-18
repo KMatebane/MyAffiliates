@@ -1,4 +1,4 @@
-import os
+import os       
 
 # Data Manipulation Packages
 import pandas as pd
@@ -13,7 +13,7 @@ Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 Name = 'MyAffliates_SalesFile'
 
 
-Month = (datetime.now() - timedelta(days=1)).strftime('%m') + '. ' + (datetime.now() - timedelta(days=1)).strftime('%B') + '/'
+Month = (datetime.now() - timedelta(days=1)).strftime('%m') + '_' + (datetime.now() - timedelta(days=1)).strftime('%B') + '/'
 Year  = (datetime.now() - timedelta(days=1)).strftime('%Y') + '/'
 Day   = (datetime.now() - timedelta(days=1)).strftime('%Y_%m_%d')
 
