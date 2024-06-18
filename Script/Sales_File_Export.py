@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-Name = 'MyAffliates_SalesFile'
+Name = 'MyAffiliates_SalesFile'
 
 file = open(Root + '/Connect/Connect.txt', 'r')
 text = file.readlines()

@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-Name = 'MyAffliates_SalesFile'
+Name = 'MyAffiliates_SalesFile'
 
 
 Month = (datetime.now() - timedelta(days=1)).strftime('%m') + '. ' + (datetime.now() - timedelta(days=1)).strftime('%B') + '/'
