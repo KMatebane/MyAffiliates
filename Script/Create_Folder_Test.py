@@ -1,8 +1,5 @@
 import os
 
-#Connect To SFTP
-import pysftp
-
 # Data Manipulation Packages
 import pandas as pd
 import numpy as np
