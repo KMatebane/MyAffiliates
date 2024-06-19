@@ -19,6 +19,7 @@ Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 # Name of the file that will have date suffixed to it
 Name = 'MyAffiliates_SalesFile'
 
+# Files That Contains MySQL Credentials
 file = open(Root + '/Connect/Connect.txt', 'r')
 text = file.readlines()
 
