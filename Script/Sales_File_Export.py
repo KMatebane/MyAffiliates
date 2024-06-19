@@ -115,7 +115,7 @@ finally:
     cobi_betika.close()
 
 
-Month = df['TRANSACTION_DATE'][0].strftime('%m') + '. ' + df['TRANSACTION_DATE'][0].strftime('%B') + '/'
+Month = df['TRANSACTION_DATE'][0].strftime('%m') + '_' + df['TRANSACTION_DATE'][0].strftime('%B') + '/'
 Year  = df['TRANSACTION_DATE'][0].strftime('%Y') + '/'
 Day   = df['TRANSACTION_DATE'][0].strftime('%Y_%m_%d')
 
