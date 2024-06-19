@@ -2,8 +2,7 @@
 import mysql.connector
 import pymysql
 
-# XML Creation
-import xml.etree.ElementTree as ET
+# Package For Directories
 import os
 
 # Data Manipulation Packages
@@ -14,7 +13,10 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
 
+# Goes One folder Back, And Gets Directory
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
+
+# Name of the file that will have date suffixed to it
 Name = 'MyAffiliates_SalesFile'
 
 file = open(Root + '/Connect/Connect.txt', 'r')
@@ -114,16 +116,23 @@ try:
 finally:
     cobi_betika.close()
 
-
+# Gets Date, Month & Year that the data is created from. Date helps name the file, and Year & Month help create the folders that report sits in. 
 Month = df['TRANSACTION_DATE'][0].strftime('%m') + '_' + df['TRANSACTION_DATE'][0].strftime('%B') + '/'
 Year  = df['TRANSACTION_DATE'][0].strftime('%Y') + '/'
-Day   = df['TRANSACTION_DATE'][0].strftime('%Y_%m_%d')
+Date  = df['TRANSACTION_DATE'][0].strftime('%Y_%m_%d')
 
+# creates path that file will be placed in
 export_path = Root + '/Reports/SalesFiles/' + Year + Month
-file_name   = Name +'_'+ Day + '.xlsx'
+
+# creates file name
+file_name   = Name +'_'+ Date + '.xlsx'
+
+# creates path with file name. Will be used to create excel document & used to fetch the correct document
 file_path   = export_path + file_name
 
+# Checks if folders and subfolders exit. If not, creates new folders and subfolders
 if not os.path.exists(export_path):
         os.makedirs(export_path)
 
-df.to_excel(file_path,index=False,sheet_name='Sales_File_'+Day)
+# Exports file to excel document
+df.to_excel(file_path,index=False,sheet_name='Sales_File_'+Date)
