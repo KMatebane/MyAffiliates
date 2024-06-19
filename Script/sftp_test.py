@@ -13,3 +13,5 @@ def test_sftp_connection():
         server.close()
     except Exception as e:
         print("SFTP connection test failed:", str(e))
+
+test_sftp_connection()
