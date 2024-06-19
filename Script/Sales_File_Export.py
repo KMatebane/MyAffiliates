@@ -72,22 +72,18 @@ try:
                                         ,a.to_sp_cash                       AS SPORTSBOOK_STAKE	\
                                         ,(a.GGR_sp - (a.GGR_sp * 0.25))     AS SPORTSBOOK_GROSS_REVENUE	\
                                         ,d.sp_cash_bonus_amt                AS SPORTSBOOK_BONUS	\
-                                        ,a.NGR_sp                           AS SPORTSBOOK_NET_REVENUE	\
                                         ,a.qty_cr                           AS CRASH_BETS	\
                                         ,a.to_cr                            AS CRASH_STAKE	\
                                         ,(a.GGR_cr - (a.GGR_cr * 0.25))     AS CRASH_GROSS_REVENUE	\
                                         ,d.cr_cash_bonus_amt                AS CRASH_BONUS	\
-                                        ,a.NGR_cr                           AS CRASH_NET_REVENUE	\
                                         ,a.qty_ca                           AS CASINO_BETS	\
                                         ,a.to_ca                            AS CASINO_STAKE	\
                                         ,(a.GGR_ca - (a.GGR_ca * 0.25))     AS CASINO_GROSS_REVENUE	\
                                         ,d.ca_cash_bonus_amt                AS CASINO_BONUS	\
-                                        ,a.NGR_ca                           AS CASINO_NET_REVENUE	\
                                         ,a.qty_v                            AS VIRTUALS_BETS	\
                                         ,a.to_v                             AS VIRTUALS_STAKES	\
                                         ,(a.GGR_v - (a.GGR_v * 0.25))       AS VIRTUALS_GROSS_REVENUE	\
                                         ,d.vi_cash_bonus_amt                AS VIRTUALS_BONUS\
-                                        ,a.NGR_v                            AS VIRTUALS_NET_REVENUE\
 \
                                 FROM betika_bi_gh.f_kpi_gh AS a\
 \
