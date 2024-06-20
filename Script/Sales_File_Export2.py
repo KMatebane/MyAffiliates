@@ -140,7 +140,7 @@ host = 'ftp.myaffiliates.com'
 port = 2222
 username = 'betika_data'
 password = 'P1QY74p7XwUezEcO'
-remote_filepath = '/myaffiliates/betika/data/queue/'
+remote_filepath = '/myaffiliates/betika/data/queue' + file_name
 
 # Create an SSH client
 ssh = paramiko.SSHClient()
