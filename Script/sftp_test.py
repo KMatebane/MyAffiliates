@@ -2,7 +2,7 @@ import pysftp
 
 def sftp_connection():
     cnopts = pysftp.CnOpts()
-    cnopts.hostkeys = None
+    #cnopts.hostkeys = None
     server = pysftp.Connection('ftp.myaffiliates.com', username='betika_data', password='P1QY74p7XwUezEcO', cnopts=cnopts)  ############# what's the password
     return server
 
