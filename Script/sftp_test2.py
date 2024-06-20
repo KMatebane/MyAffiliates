@@ -24,7 +24,7 @@ def test_sftp_connection():
 
         # List directory contents
         print("Listing directory contents:")
-        print(sftp.listdir())
+        print(sftp.listdir_attr())
 
         # Close the SFTP session and SSH client
         sftp.close()
