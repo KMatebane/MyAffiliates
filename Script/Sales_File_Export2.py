@@ -150,22 +150,22 @@ ssh.load_system_host_keys()
 #ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 ssh.connect(hostname=host, port=port, username=username, password=password)
-print("SSH connection test successful")
+print("SSH connection successful")
 
 # Open an SFTP session
 sftp = ssh.open_sftp()
-print("SFTP connection test successful")
+print("SFTP connection successful")
 
-sftp.put(file_path, remote_filepath)
-print(f"File {file_path} uploaded to {remote_filepath}")
+sftp.mkdir(remote_filepath)
+print("Path Has Be Created")
+
+#sftp.put(file_path, remote_filepath)
+#print(f"File {file_path} uploaded to {remote_filepath}")
 
 # List directory contents after upload
 print("Listing directory contents after upload:")
 print(sftp.listdir())
 
-# List directory contents
-print("Listing directory contents:")
-print(sftp.listdir())
 
 # Close the SFTP session and SSH client
 sftp.close()
