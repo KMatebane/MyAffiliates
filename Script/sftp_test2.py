@@ -1,19 +1,36 @@
-import pysftp
 import paramiko
-
-#Optimove
-def sftp_connection():
-    cnopts = pysftp.CnOpts()
-    cnopts.hostkeys = None
-    server = pysftp.Connection('ftp.myaffiliates.com', username='betika_data', password='P1QY74p7XwUezEcO', cnopts=cnopts)
-    return server
-
 
 def test_sftp_connection():
     try:
-        server = sftp_connection()
-        server.cwd('/myaffiliates/betika/data/queue')  ############## change the directory
+        # Define connection parameters
+        host = 'ftp.myaffiliates.com'
+        port = 2222
+        username = 'betika_data'
+        password = 'P1QY74p7XwUezEcO'
+
+        # Create an SSH client
+        ssh = paramiko.SSHClient()
+        ssh.load_system_host_keys()
+
+        #ssh.load_host_keys('/home/ekutniakova/.ssh/known_hosts')
+        #ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+        ssh.connect(hostname=host, port=port, username=username, password=password)
+        print("SSH connection test successful")
+
+        # Open an SFTP session
+        sftp = ssh.open_sftp()
         print("SFTP connection test successful")
-        server.close()
+
+        # List directory contents
+        print("Listing directory contents:")
+        print(sftp.listdir())
+
+        # Close the SFTP session and SSH client
+        sftp.close()
+        ssh.close()
     except Exception as e:
         print("SFTP connection test failed:", str(e))
+
+
+test_sftp_connection()
