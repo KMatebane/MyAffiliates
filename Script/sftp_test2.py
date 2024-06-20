@@ -7,7 +7,7 @@ def test_sftp_connection():
         port = 2222
         username = 'betika_data'
         password = 'P1QY74p7XwUezEcO'
-        remote_filepath = '/myaffiliates/betika/data'
+        remote_filepath = '/myaffiliates/betika/data/queue'
 
         # Create an SSH client
         ssh = paramiko.SSHClient()
