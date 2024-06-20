@@ -7,6 +7,7 @@ def test_sftp_connection():
         port = 2222
         username = 'betika_data'
         password = 'P1QY74p7XwUezEcO'
+        remote_filepath = '/myaffiliates/betika/data/queue'
 
         # Create an SSH client
         ssh = paramiko.SSHClient()
@@ -24,7 +25,7 @@ def test_sftp_connection():
 
         # List directory contents
         print("Listing directory contents:")
-        print(sftp.listdir_attr())
+        print(sftp.listdir_attr(remote_filepath))
 
         # Close the SFTP session and SSH client
         sftp.close()
