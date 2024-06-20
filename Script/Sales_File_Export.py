@@ -102,7 +102,7 @@ try:
                                 WHERE DATE(a.summary_date) >= DATE(CURDATE()- INTERVAL 1 DAY)\
                                 AND DATE(d.summary_date) >= DATE(CURDATE()- INTERVAL 1 DAY)\
 \
-                                GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26\
+                                GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22\
 \
                                 ORDER BY a.profile_id\
                                         ,a.summary_date\
