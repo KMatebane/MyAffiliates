@@ -16,3 +16,6 @@ def test_sftp_connection():
         print("SFTP connection test failed:", str(e))
 
 test_sftp_connection()
+
+sftpHost = ''
+sftpPort = ''
