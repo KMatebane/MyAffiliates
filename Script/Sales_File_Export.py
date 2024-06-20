@@ -1,6 +1,7 @@
 # Package used to connect to MySQL Databases
 import mysql.connector
 import pymysql
+import paramiko
 
 # Package For Directories
 import os
@@ -133,3 +134,35 @@ if not os.path.exists(export_path):
 
 # Exports file to excel document
 df.to_excel(file_path,index=False,sheet_name='Sales_File_'+Date)
+
+# SFTP Credentials
+host = 'ftp.myaffiliates.com'
+port = 2222
+username = 'betika_data'
+password = 'P1QY74p7XwUezEcO'
+remote_filepath = '/myaffiliates/betika/data/queue/' + file_name
+
+# Create an SSH client
+ssh = paramiko.SSHClient()
+ssh.load_system_host_keys()
+
+# Create SSH Connection Container
+ssh.connect(hostname=host, port=port, username=username, password=password)
+print("SSH connection successful")
+
+# Open an SFTP session
+sftp = ssh.open_sftp()
+print("SFTP connection successful")
+
+# Upload file from VM to SFTP
+sftp.put(file_path, remote_filepath)
+print(f"File {file_path} uploaded to {remote_filepath}")
+
+# List directory contents after upload
+print("Listing directory contents after upload:")
+print(sftp.listdir())
+
+
+# Close the SFTP session and SSH client
+sftp.close()
+ssh.close()
