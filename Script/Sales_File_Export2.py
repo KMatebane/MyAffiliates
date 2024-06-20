@@ -156,8 +156,8 @@ print("SSH connection successful")
 sftp = ssh.open_sftp()
 print("SFTP connection successful")
 
-sftp.mkdir(remote_filepath)
-print("Path Has Be Created")
+#sftp.mkdir(remote_filepath)
+#print("Path Has Be Created")
 
 #sftp.put(file_path, remote_filepath)
 #print(f"File {file_path} uploaded to {remote_filepath}")
