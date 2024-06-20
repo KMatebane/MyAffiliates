@@ -140,7 +140,7 @@ host = 'ftp.myaffiliates.com'
 port = 2222
 username = 'betika_data'
 password = 'P1QY74p7XwUezEcO'
-remote_filepath = '/myaffiliates/betika/data/queue'
+remote_filepath = '/myaffiliates/betika/data/queue/'
 
 # Create an SSH client
 ssh = paramiko.SSHClient()
@@ -159,8 +159,8 @@ print("SFTP connection successful")
 #sftp.mkdir(remote_filepath)
 #print("Path Has Be Created")
 
-#sftp.put(file_path, remote_filepath)
-#print(f"File {file_path} uploaded to {remote_filepath}")
+sftp.put(file_path, remote_filepath)
+print(f"File {file_path} uploaded to {remote_filepath}")
 
 # List directory contents after upload
 print("Listing directory contents after upload:")
