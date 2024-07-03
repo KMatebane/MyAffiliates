@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore")
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 
 # Name of the file that will have date suffixed to it
-Name = 'MyAffiliates_SalesFile'
+Name = 'Betika_SalesFile'
 
 # Files That Contains MySQL Credentials
 file = open('/home/kmatebane/Github/MyAffiliates/Connect/Connect.txt', 'r')
