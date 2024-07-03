@@ -40,7 +40,7 @@ try:
                                 ,x.PLAYER_CURRENCY\
                                 ,x.ROLLBACKS\
                                 ,x.FIRST_DEPOSIT_AMOUNT\
-                                ,x.DEPOSITS\
+                                ,x.TOTAL_DEPOSITS\
                                 ,x.SPORTSBOOK_BETS	\
                                 ,x.SPORTSBOOK_STAKE	\
                                 ,x.SPORTSBOOK_GROSS_REVENUE	\
@@ -68,7 +68,7 @@ try:
                                     ,z.PLAYER_CURRENCY\
                                     ,z.ROLLBACKS\
                                     ,z.FIRST_DEPOSIT_AMOUNT\
-                                    ,z.DEPOSITS\
+                                    ,z.TOTAL_DEPOSITS\
                                     ,z.SPORTSBOOK_BETS	\
                                     ,z.SPORTSBOOK_STAKE	\
                                     ,z.SPORTSBOOK_GROSS_REVENUE	\
@@ -90,7 +90,7 @@ try:
                                         ,CASE WHEN e.first_deposit = a.summary_date \
                                             THEN a.dep ELSE 0 \
                                             END AS FIRST_DEPOSIT_AMOUNT\
-                                        ,a.dep                                          AS DEPOSITS\
+                                        ,a.dep                                          AS TOTAL_DEPOSITS\
                                         ,a.qty_sp_cash                                  AS SPORTSBOOK_BETS	\
                                         ,a.to_sp_cash                                   AS SPORTSBOOK_STAKE	\
                                         ,(a.GGR_sp - (a.GGR_sp * 0.25))                 AS SPORTSBOOK_GROSS_REVENUE		\
