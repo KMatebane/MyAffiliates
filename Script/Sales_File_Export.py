@@ -39,7 +39,8 @@ try:
                                 ,x.PLAYER_ID\
                                 ,x.PLAYER_CURRENCY\
                                 ,x.ROLLBACKS\
-                                ,x.DEPOSITS\
+                                ,x.FIRST_DEPOSIT_AMOUNT\
+                                ,x.TOTAL_DEPOSITS\
                                 ,x.SPORTSBOOK_BETS	\
                                 ,x.SPORTSBOOK_STAKE	\
                                 ,x.SPORTSBOOK_GROSS_REVENUE	\
@@ -61,30 +62,35 @@ try:
                                 ,x.VIRTUALS_BONUS\
                                 ,(x.VIRTUALS_GROSS_REVENUE - x.VIRTUALS_BONUS) AS VIRTUALS_NET_REVENUE\
 \
-                            FROM (SELECT a.summary_date                     AS TRANSACTION_DATE\
-                                        ,c.affiliate_tag                    AS BTAG\
-                                        ,a.profile_id                       AS PLAYER_ID	\
-                                        ,'GHS'                              AS PLAYER_CURRENCY\
+                                FROM (SELECT a.summary_date                             AS TRANSACTION_DATE\
+                                        ,c.affiliate_tag                                AS BTAG\
+                                        ,a.profile_id                                   AS PLAYER_ID	\
+                                        ,'GHS'                                          AS PLAYER_CURRENCY\
                                         ,0 AS ROLLBACKS\
-                                        ,CASE WHEN e.first_deposit IS NULL \
-                                            THEN 0 ELSE 1 \
-                                            END AS DEPOSITS\
-                                        ,a.qty_sp_cash                      AS SPORTSBOOK_BETS	\
-                                        ,a.to_sp_cash                       AS SPORTSBOOK_STAKE	\
-                                        ,(a.GGR_sp - (a.GGR_sp * 0.25))     AS SPORTSBOOK_GROSS_REVENUE	\
-                                        ,d.sp_cash_bonus_amt                AS SPORTSBOOK_BONUS	\
-                                        ,a.qty_cr                           AS CRASH_BETS	\
-                                        ,a.to_cr                            AS CRASH_STAKE	\
-                                        ,(a.GGR_cr - (a.GGR_cr * 0.25))     AS CRASH_GROSS_REVENUE	\
-                                        ,d.cr_cash_bonus_amt                AS CRASH_BONUS	\
-                                        ,a.qty_ca                           AS CASINO_BETS	\
-                                        ,a.to_ca                            AS CASINO_STAKE	\
-                                        ,(a.GGR_ca - (a.GGR_ca * 0.25))     AS CASINO_GROSS_REVENUE	\
-                                        ,d.ca_cash_bonus_amt                AS CASINO_BONUS	\
-                                        ,a.qty_v                            AS VIRTUALS_BETS	\
-                                        ,a.to_v                             AS VIRTUALS_STAKES	\
-                                        ,(a.GGR_v - (a.GGR_v * 0.25))       AS VIRTUALS_GROSS_REVENUE	\
-                                        ,d.vi_cash_bonus_amt                AS VIRTUALS_BONUS\
+                                        ,CASE WHEN e.first_deposit = a.summary_date \
+                                            THEN a.dep ELSE 0 \
+                                            END AS FIRST_DEPOSIT_AMOUNT\
+                                        ,a.dep                                          AS TOTAL_DEPOSITS\
+                                        ,a.qty_sp_cash                                  AS SPORTSBOOK_BETS	\
+                                        ,a.to_sp_cash                                   AS SPORTSBOOK_STAKE	\
+                                        ,(a.GGR_sp - (a.GGR_sp * 0.25))                 AS SPORTSBOOK_GROSS_REVENUE	\
+                                        ,d.sp_cash_bonus_amt                            AS SPORTSBOOK_BONUS	\
+                                        ,a.NGR_sp                                       AS SPORTSBOOK_NET_REVENUE	\
+                                        ,a.qty_cr                                       AS CRASH_BETS	\
+                                        ,a.to_cr                                        AS CRASH_STAKE	\
+                                        ,(a.GGR_cr - (a.GGR_cr * 0.25))                 AS CRASH_GROSS_REVENUE	\
+                                        ,d.cr_cash_bonus_amt                            AS CRASH_BONUS	\
+                                        ,a.NGR_cr                                       AS CRASH_NET_REVENUE	\
+                                        ,a.qty_ca                                       AS CASINO_BETS	\
+                                        ,a.to_ca                                        AS CASINO_STAKE	\
+                                        ,(a.GGR_ca - (a.GGR_ca * 0.25))                 AS CASINO_GROSS_REVENUE	\
+                                        ,d.ca_cash_bonus_amt                            AS CASINO_BONUS	\
+                                        ,a.NGR_ca                                       AS CASINO_NET_REVENUE	\
+                                        ,a.qty_v                                        AS VIRTUALS_BETS	\
+                                        ,a.to_v                                         AS VIRTUALS_STAKES	\
+                                        ,(a.GGR_v - (a.GGR_v * 0.25))                   AS VIRTUALS_GROSS_REVENUE	\
+                                        ,d.vi_cash_bonus_amt                            AS VIRTUALS_BONUS\
+                                        ,a.NGR_v                                        AS VIRTUALS_NET_REVENUE\
 \
                                 FROM betika_bi_gh.f_kpi_gh AS a\
 \
@@ -102,8 +108,10 @@ try:
 \
                                 WHERE DATE(a.summary_date) >= DATE(CURDATE()- INTERVAL 1 DAY)\
                                 AND DATE(d.summary_date) >= DATE(CURDATE()- INTERVAL 1 DAY)\
+                         \
+                                AND (c.affiliate_tag IS NOT NULL AND c.affiliate_tag NOT IN ('None', 'Null'))\
 \
-                                GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22\
+                                GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27\
 \
                                 ORDER BY a.profile_id\
                                         ,a.summary_date\
@@ -117,13 +125,13 @@ finally:
 # Gets Date, Month & Year that the data is created from. Date helps name the file, and Year & Month help create the folders that report sits in. 
 Month = df['TRANSACTION_DATE'][0].strftime('%m') + '_' + df['TRANSACTION_DATE'][0].strftime('%B') + '/'
 Year  = df['TRANSACTION_DATE'][0].strftime('%Y') + '/'
-Date  = df['TRANSACTION_DATE'][0].strftime('%Y_%m_%d')
+Date  = df['TRANSACTION_DATE'][0].strftime('%Y-%m-%d')
 
 # creates path that file will be placed in
 export_path = Root + '/Reports/SalesFiles/' + Year + Month
 
 # creates file name
-file_name   = Name +'_'+ Date + '.xlsx'
+file_name   = Name +'_'+ Date + '.csv'
 
 # creates path with file name. Will be used to create excel document & used to fetch the correct document
 file_path   = export_path + file_name
@@ -133,7 +141,7 @@ if not os.path.exists(export_path):
         os.makedirs(export_path)
 
 # Exports file to excel document
-df.to_excel(file_path,index=False,sheet_name='Sales_File_'+Date)
+df.to_csv(file_path,index=False)
 
 # SFTP Credentials
 host = 'ftp.myaffiliates.com'
