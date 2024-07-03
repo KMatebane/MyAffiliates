@@ -1,4 +1,8 @@
 import paramiko
+import os
+
+file = open('/home/kmatebane/Github/MyAffiliates/Connect/Connect.txt', 'r')
+text = file.readlines()
 
 def test_sftp_connection():
     try:

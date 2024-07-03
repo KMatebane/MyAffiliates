@@ -21,7 +21,7 @@ Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 Name = 'MyAffiliates_SalesFile'
 
 # Files That Contains MySQL Credentials
-file = open(Root + '/Connect/Connect.txt', 'r')
+file = open('/home/kmatebane/Github/MyAffiliates/Connect/Connect.txt', 'r')
 text = file.readlines()
 
 # Code To Connect MySQL
