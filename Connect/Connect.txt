@@ -1,8 +1,8 @@
-cobi-mysql01.betika.private
+gcss-saltstack.betika.private
 coms-mysql01.betika.private
 gcss-mysql-cobi.pepeta.private
 gcss-mysql-coms.pepeta.private
-3306
+33061
 kmatebane
 p!rnP!XpDdQOh0sukCjx
 betika_bi_gh
