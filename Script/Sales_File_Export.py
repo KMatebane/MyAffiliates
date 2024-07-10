@@ -172,7 +172,7 @@ Year  = df['TRANSACTION_DATE'][0].strftime('%Y') + '/'
 Date  = df['TRANSACTION_DATE'][0].strftime('%Y-%m-%d')
 
 # creates path that file will be placed in
-export_path = Root + '/Reports/SalesFiles/' + Year + Month
+export_path = '/home/kmatebane/Github/MyAffiliates/Reports/SalesFiles/' + Year + Month
 
 # creates file name
 file_name   = Name +'_'+ Date + '.csv'
