@@ -1,10 +1,14 @@
 # Package used to connect to MySQL Databases
 import mysql.connector
 import pymysql
-import paramiko
 
-# Package For Directories
+#Connect To SFTP
+import pysftp
+
+# FOlder Creation
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 
 # Data Manipulation Packages
 import pandas as pd
@@ -14,22 +18,23 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
 
-# Goes One folder Back, And Gets Directory
+ROOT_DIR: Path = Path().resolve().parent
+load_dotenv(os.path.join(ROOT_DIR, ".env"))
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
-
-# Name of the file that will have date suffixed to it
 Name = 'Betika_SalesFile'
 
-# Files That Contains MySQL Credentials
-file = open('/home/kmatebane/Github/MyAffiliates/Connect/Connect.txt', 'r')
-text = file.readlines()
+host_ = os.getenv('HOST')
+database_ = os.getenv('DATABASE')
+user_ = os.getenv('NAME')
+password_ = os.getenv('PASSWORD')
+port_ = os.getenv('PORT')
 
 # Code To Connect MySQL
-cobi_betika = mysql.connector.connect(host=text[0].strip()
-                                      ,database=text[7].strip()
-                                      ,user=text[5].strip()
-                                      ,password=text[6].strip()
-                                      ,port=text[4].strip())
+cobi_betika = mysql.connector.connect(host=host_
+                                      ,database=database_
+                                      ,user=user_
+                                      ,password=password_
+                                      ,port=port_)
 
 # Connect to MySQL database
 try:
