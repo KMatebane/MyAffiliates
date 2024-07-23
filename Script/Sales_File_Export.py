@@ -166,6 +166,12 @@ try:
 finally:
     cobi_betika.close()
 
+df['SPORTSBOOK_BETS'] = 0
+df['SPORTSBOOK_STAKE'] = 0
+df['SPORTSBOOK_GROSS_REVENUE'] = 0
+df['SPORTSBOOK_BONUS'] = 0
+df['SPORTSBOOK_NET_REVENUE'] = 0
+
 # Gets Date, Month & Year that the data is created from. Date helps name the file, and Year & Month help create the folders that report sits in. 
 Month = df['TRANSACTION_DATE'][0].strftime('%m') + '_' + df['TRANSACTION_DATE'][0].strftime('%B') + '/'
 Year  = df['TRANSACTION_DATE'][0].strftime('%Y') + '/'
