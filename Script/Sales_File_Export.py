@@ -1,14 +1,10 @@
 # Package used to connect to MySQL Databases
 import mysql.connector
 import pymysql
+import paramiko
 
-#Connect To SFTP
-import pysftp
-
-# FOlder Creation
+# Package For Directories
 import os
-from pathlib import Path
-from dotenv import load_dotenv
 
 # Data Manipulation Packages
 import pandas as pd
@@ -18,23 +14,22 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
 
-ROOT_DIR: Path = Path().resolve().parent
-load_dotenv(os.path.join(ROOT_DIR, ".env"))
+# Goes One folder Back, And Gets Directory
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
+
+# Name of the file that will have date suffixed to it
 Name = 'Betika_SalesFile'
 
-host_ = os.getenv('HOST')
-database_ = os.getenv('DATABASE')
-user_ = os.getenv('NAME')
-password_ = os.getenv('PASSWORD')
-port_ = os.getenv('PORT')
+# Files That Contains MySQL Credentials
+file = open('/home/kmatebane/Github/MyAffiliates/Connect/Connect.txt', 'r')
+text = file.readlines()
 
 # Code To Connect MySQL
-cobi_betika = mysql.connector.connect(host=host_
-                                      ,database=database_
-                                      ,user=user_
-                                      ,password=password_
-                                      ,port=port_)
+cobi_betika = mysql.connector.connect(host=text[0].strip()
+                                      ,database=text[7].strip()
+                                      ,user=text[5].strip()
+                                      ,password=text[6].strip()
+                                      ,port=text[4].strip())
 
 # Connect to MySQL database
 try:
@@ -46,24 +41,24 @@ try:
                                 ,x.ROLLBACKS\
                                 ,x.FIRST_DEPOSIT_AMOUNT\
                                 ,x.TOTAL_DEPOSITS\
-                                ,x.SPORTSBOOK_BETS	\
-                                ,x.SPORTSBOOK_STAKE	\
-                                ,x.SPORTSBOOK_GROSS_REVENUE	\
-                                ,COALESCE(y.SPORTSBOOK_BONUS,0)	                                AS SPORTSBOOK_BONUS\
-                                ,(x.SPORTSBOOK_GROSS_REVENUE - COALESCE(y.SPORTSBOOK_BONUS,0))  AS SPORTSBOOK_NET_REVENUE	\
-                                ,x.CRASH_BETS	\
-                                ,x.CRASH_STAKE	\
-                                ,x.CRASH_GROSS_REVENUE	\
+                                ,x.SPORTSBOOK_BETS      \
+                                ,x.SPORTSBOOK_STAKE     \
+                                ,x.SPORTSBOOK_GROSS_REVENUE     \
+                                ,COALESCE(y.SPORTSBOOK_BONUS,0)                                 AS SPORTSBOOK_BONUS\
+                                ,(x.SPORTSBOOK_GROSS_REVENUE - COALESCE(y.SPORTSBOOK_BONUS,0))  AS SPORTSBOOK_NET_REVENUE    \
+                                ,x.CRASH_BETS   \
+                                ,x.CRASH_STAKE  \
+                                ,x.CRASH_GROSS_REVENUE  \
                                 ,COALESCE(y.CRASH_BONUS,0) AS CRASH_BONUS\
-                                ,(x.CRASH_GROSS_REVENUE - COALESCE(y.CRASH_BONUS,0))            AS CRASH_NET_REVENUE	\
-                                ,x.CASINO_BETS	\
-                                ,x.CASINO_STAKE	\
-                                ,x.CASINO_GROSS_REVENUE	\
-                                ,COALESCE(y.CASINO_BONUS, 0)                                    AS CASINO_BONUS	\
-                                ,(x.CASINO_GROSS_REVENUE - COALESCE(y.CASINO_BONUS,0))          AS CASINO_NET_REVENUE	\
-                                ,x.VIRTUALS_BETS	\
-                                ,x.VIRTUALS_STAKES	\
-                                ,x.VIRTUALS_GROSS_REVENUE	\
+                                ,(x.CRASH_GROSS_REVENUE - COALESCE(y.CRASH_BONUS,0))            AS CRASH_NET_REVENUE \
+                                ,x.CASINO_BETS  \
+                                ,x.CASINO_STAKE \
+                                ,x.CASINO_GROSS_REVENUE \
+                                ,COALESCE(y.CASINO_BONUS, 0)                                    AS CASINO_BONUS \
+                                ,(x.CASINO_GROSS_REVENUE - COALESCE(y.CASINO_BONUS,0))          AS CASINO_NET_REVENUE\
+                                ,x.VIRTUALS_BETS        \
+                                ,x.VIRTUALS_STAKES      \
+                                ,x.VIRTUALS_GROSS_REVENUE       \
                                 ,COALESCE(y.VIRTUALS_BONUS,0) AS VIRTUALS_BONUS\
                                 ,(x.VIRTUALS_GROSS_REVENUE - COALESCE(y.VIRTUALS_BONUS,0))      AS VIRTUALS_NET_REVENUE\
 \
@@ -74,43 +69,43 @@ try:
                                     ,z.ROLLBACKS\
                                     ,z.FIRST_DEPOSIT_AMOUNT\
                                     ,z.TOTAL_DEPOSITS\
-                                    ,z.SPORTSBOOK_BETS	\
-                                    ,z.SPORTSBOOK_STAKE	\
-                                    ,z.SPORTSBOOK_GROSS_REVENUE	\
-                                    ,z.CRASH_BETS	\
-                                    ,z.CRASH_STAKE	\
-                                    ,z.CRASH_GROSS_REVENUE	\
-                                    ,z.CASINO_BETS	\
-                                    ,z.CASINO_STAKE	\
-                                    ,z.CASINO_GROSS_REVENUE	\
-                                    ,z.VIRTUALS_BETS	\
-                                    ,z.VIRTUALS_STAKES	\
-                                    ,z.VIRTUALS_GROSS_REVENUE	\
+                                    ,z.SPORTSBOOK_BETS  \
+                                    ,z.SPORTSBOOK_STAKE \
+                                    ,z.SPORTSBOOK_GROSS_REVENUE \
+                                    ,z.CRASH_BETS       \
+                                    ,z.CRASH_STAKE      \
+                                    ,z.CRASH_GROSS_REVENUE      \
+                                    ,z.CASINO_BETS      \
+                                    ,z.CASINO_STAKE     \
+                                    ,z.CASINO_GROSS_REVENUE     \
+                                    ,z.VIRTUALS_BETS    \
+                                    ,z.VIRTUALS_STAKES  \
+                                    ,z.VIRTUALS_GROSS_REVENUE   \
 \
                             FROM (SELECT a.summary_date                             AS TRANSACTION_DATE\
                                         ,c.affiliate_tag                                AS BTAG\
-                                        ,a.profile_id                                   AS PLAYER_ID	\
+                                        ,a.profile_id                                   AS PLAYER_ID    \
                                         ,'GHS'                                          AS PLAYER_CURRENCY\
                                         ,0 AS ROLLBACKS\
                                         ,CASE WHEN e.first_deposit = a.summary_date \
                                             THEN a.dep ELSE 0 \
                                             END AS FIRST_DEPOSIT_AMOUNT\
                                         ,a.dep                                          AS TOTAL_DEPOSITS\
-                                        ,a.qty_sp_cash                                  AS SPORTSBOOK_BETS	\
-                                        ,a.to_sp_cash                                   AS SPORTSBOOK_STAKE	\
-                                        ,(a.GGR_sp - (a.GGR_sp * 0.25))                 AS SPORTSBOOK_GROSS_REVENUE		\
-                                        ,a.NGR_sp                                       AS SPORTSBOOK_NET_REVENUE	\
-                                        ,a.qty_cr                                       AS CRASH_BETS	\
-                                        ,a.to_cr                                        AS CRASH_STAKE	\
-                                        ,(a.GGR_cr - (a.GGR_cr * 0.25))                 AS CRASH_GROSS_REVENUE		\
-                                        ,a.NGR_cr                                       AS CRASH_NET_REVENUE	\
-                                        ,a.qty_ca                                       AS CASINO_BETS	\
-                                        ,a.to_ca                                        AS CASINO_STAKE	\
-                                        ,(a.GGR_ca - (a.GGR_ca * 0.25))                 AS CASINO_GROSS_REVENUE		\
-                                        ,a.NGR_ca                                       AS CASINO_NET_REVENUE	\
-                                        ,a.qty_v                                        AS VIRTUALS_BETS	\
-                                        ,a.to_v                                         AS VIRTUALS_STAKES	\
-                                        ,(a.GGR_v - (a.GGR_v * 0.25))                   AS VIRTUALS_GROSS_REVENUE	\
+                                        ,a.qty_sp_cash                                  AS SPORTSBOOK_BETS      \
+                                        ,a.to_sp_cash                                   AS SPORTSBOOK_STAKE     \
+                                        ,(a.GGR_sp - (a.GGR_sp * 0.25))                 AS SPORTSBOOK_GROSS_REVENUE  \
+                                        ,a.NGR_sp                                       AS SPORTSBOOK_NET_REVENUE    \
+                                        ,a.qty_cr                                       AS CRASH_BETS   \
+                                        ,a.to_cr                                        AS CRASH_STAKE  \
+                                        ,(a.GGR_cr - (a.GGR_cr * 0.25))                 AS CRASH_GROSS_REVENUE       \
+                                        ,a.NGR_cr                                       AS CRASH_NET_REVENUE    \
+                                        ,a.qty_ca                                       AS CASINO_BETS  \
+                                        ,a.to_ca                                        AS CASINO_STAKE \
+                                        ,(a.GGR_ca - (a.GGR_ca * 0.25))                 AS CASINO_GROSS_REVENUE      \
+                                        ,a.NGR_ca                                       AS CASINO_NET_REVENUE   \
+                                        ,a.qty_v                                        AS VIRTUALS_BETS        \
+                                        ,a.to_v                                         AS VIRTUALS_STAKES      \
+                                        ,(a.GGR_v - (a.GGR_v * 0.25))                   AS VIRTUALS_GROSS_REVENUE    \
                                         ,a.NGR_v                                        AS VIRTUALS_NET_REVENUE\
                                         ,c.created\
                                         ,RANK() OVER (PARTITION BY c.profile_id ORDER BY c.created DESC) AS Ranking\
@@ -222,4 +217,3 @@ print(sftp.listdir())
 
 # Close the SFTP session and SSH client
 sftp.close()
-ssh.close()
