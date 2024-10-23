@@ -10,7 +10,7 @@ port     =  2222
 Root = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 
 
-remote_source_dir = Root + '/Backdated'
+remote_source_dir = Root + '/MyAffiliates/Backdated'
 remote_destination_dir = '/myaffiliates/betika/data/queue'
 
 
